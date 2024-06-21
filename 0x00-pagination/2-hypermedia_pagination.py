@@ -14,7 +14,7 @@ Task:
     Make sure to reuse get_page in your implementation.
     You can use the math module if necessary.
 """
-from typing import Tuple, List, Union
+from typing import Tuple, List, Union, Dict
 import csv
 from math import ceil
 
@@ -66,7 +66,7 @@ class Server:
         return self.dataset()[start:end]
 
     def get_hyper(self, page: int = 1,
-                  page_size: int = 10) -> dict[str,
+                  page_size: int = 10) -> Dict[str,
                                                Union[int, List[List], None]]:
         """Provide the hypermedia pagination information given the page and
             page_size
@@ -75,7 +75,8 @@ class Server:
         rows = len(self.dataset())
         total_pages = ceil(rows / page_size)
         next_page = (None, page + 1)[page < total_pages
-                                     or index_range(page, page_size)[1] < rows]
+                                     and index_range(page,
+                                                     page_size)[1] >= rows]
         prev_page = (None, page - 1)[page > 1]
         return {
                 "page_size": len(data),
