@@ -32,7 +32,6 @@ class Server:
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
-            truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
                 i: dataset[i] for i in range(len(dataset))
             }
@@ -41,7 +40,7 @@ class Server:
     def assert_index(self, index: int) -> None:
         """Asserts if index is valid
         """
-        assert index >= 0 and index < len(self.indexed_dataset())
+        assert 0 <= index < len(self.dataset())
 
     def get_hyper_index(self, index: Union[int, None] = None,
                         page_size: int = 10) -> Dict[str, Union[int, List]]:
@@ -60,14 +59,16 @@ class Server:
                     page_size: number of items per page
                     data: list of the data in the current page
         """
-        index = index or 0
+        index = 0 if index is None else index
         self.assert_index(index)
         dataset = self.indexed_dataset()
         data = []
         next_index = index
-        while len(data) < page_size:
-            if dataset.get(next_index):
+        count = 0
+        while count < page_size and next_index < len(dataset):
+            if next_index in dataset:
                 data.append(dataset[next_index])
+                count += 1
             next_index += 1
         return {
             "index": index,
