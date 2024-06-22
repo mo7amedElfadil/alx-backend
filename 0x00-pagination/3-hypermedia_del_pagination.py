@@ -71,7 +71,7 @@ class Server:
                 data.append(dataset[next_index])
                 count += 1
             next_index += 1
-        next_index = None if next_index >= len(dataset) else next_index
+        next_index = None if count < page_size else next_index
         return {
             "index": index,
             "next_index": next_index,
