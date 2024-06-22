@@ -43,7 +43,8 @@ class Server:
         assert 0 <= index < len(self.dataset())
 
     def get_hyper_index(self, index: Union[int, None] = None,
-                        page_size: int = 10) -> Dict[str, Union[int, List]]:
+                        page_size: int = 10) -> Dict[str,
+                                                     Union[int, List, None]]:
         """Get the hyper index of a dataset
             The goal here is that if between two queries,
             certain rows are removed from the dataset,
@@ -70,6 +71,7 @@ class Server:
                 data.append(dataset[next_index])
                 count += 1
             next_index += 1
+        next_index = None if next_index >= len(dataset) else next_index
         return {
             "index": index,
             "next_index": next_index,
