@@ -95,10 +95,7 @@ class Server:
         data = self.get_page(page, page_size)
         rows = len(self.dataset())
         total_pages = ceil(rows / page_size)
-        next_page = (None, page + 1)[page < total_pages
-                                     and
-                                     self.index_range(page,
-                                                      page_size)[1] >= rows]
+        next_page = (None, page + 1)[page < total_pages]
         prev_page = (None, page - 1)[page > 1]
         return {
                 "page_size": len(data),
