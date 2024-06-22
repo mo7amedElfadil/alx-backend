@@ -37,10 +37,13 @@ class Server:
             }
         return self.__indexed_dataset
 
-    def assert_index(self, index: int) -> None:
+    def assert_index(self, index: int, page_size: int) -> None:
         """Asserts if index is valid
         """
+        assert isinstance(index, int)
         assert 0 <= index < len(self.dataset())
+        assert isinstance(page_size, int)
+        assert 0 < page_size
 
     def get_hyper_index(self, index: Union[int, None] = None,
                         page_size: int = 10) -> Dict[str,
@@ -61,7 +64,7 @@ class Server:
                     data: list of the data in the current page
         """
         index = 0 if index is None else index
-        self.assert_index(index)
+        self.assert_index(index, page_size)
         dataset = self.indexed_dataset()
         data = []
         next_index = index
