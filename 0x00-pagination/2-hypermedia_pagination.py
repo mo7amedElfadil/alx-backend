@@ -14,9 +14,9 @@ Task:
     Make sure to reuse get_page in your implementation.
     You can use the math module if necessary.
 """
-from typing import Tuple, List, Union, Dict
 import csv
 from math import ceil
+from typing import Tuple, List, Union, Dict
 
 
 class Server:
@@ -52,6 +52,27 @@ class Server:
 
         return self.__dataset
 
+    @staticmethod
+    def index_range(page: int, page_size: int) -> Tuple[int, int]:
+        """Provide the index range for pagination
+            Description:
+                Provide the start and end index for pagination
+                The logic is:
+                    the start index is the page number minus 1 times the page
+                    size
+                    the end index is the page number times the page size
+                    so if page is 1 and page_size is 10, the start index is 0
+                    and the end index is 10
+            Parameters:
+                page : int
+                page_size : int
+            Returns:
+                Tuple[int, int]
+        """
+        start = (page - 1) * page_size
+        end = page * page_size
+        return (start, end)
+
     def assert_inputs(self, page: int, page_size: int) -> None:
         """Assert that the inputs are integers greater than 0
         """
@@ -62,7 +83,7 @@ class Server:
         """Get the page of the dataset using pagination
         """
         self.assert_inputs(page, page_size)
-        start, end = index_range(page, page_size)
+        start, end = self.index_range(page, page_size)
         return self.dataset()[start:end]
 
     def get_hyper(self, page: int = 1,
@@ -75,8 +96,9 @@ class Server:
         rows = len(self.dataset())
         total_pages = ceil(rows / page_size)
         next_page = (None, page + 1)[page < total_pages
-                                     and index_range(page,
-                                                     page_size)[1] >= rows]
+                                     and
+                                     self.index_range(page,
+                                                      page_size)[1] >= rows]
         prev_page = (None, page - 1)[page > 1]
         return {
                 "page_size": len(data),
@@ -86,23 +108,3 @@ class Server:
                 "prev_page": prev_page,
                 "total_pages": total_pages
                 }
-
-
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """Provide the index range for pagination
-        Description:
-            Provide the start and end index for pagination
-            The logic is:
-                the start index is the page number minus 1 times the page size
-                the end index is the page number times the page size
-                so if page is 1 and page_size is 10, the start index is 0 and
-                the end index is 10
-        Parameters:
-            page : int
-            page_size : int
-        Returns:
-            Tuple[int, int]
-    """
-    start = (page - 1) * page_size
-    end = page * page_size
-    return (start, end)
