@@ -67,19 +67,15 @@ class Server:
         self.assert_index(index, page_size)
         dataset = self.indexed_dataset()
         data = []
-        next_index = index + page_size
-        for i in range(index, next_index):
-            if dataset.get(i) is not None:
-                data.append(dataset[i])
-            else:
-                next_index += 1
-        # count = 0
-        # while count < page_size and next_index < len(dataset):
-        #     if next_index in dataset:
-        #         data.append(dataset[next_index])
-        #         count += 1
-        #     next_index += 1
-        # next_index = None if count < page_size else next_index
+        next_index = index
+        count = 0
+        while count < page_size and next_index < len(dataset):
+            if next_index in dataset:
+                data.append(dataset[next_index])
+                count += 1
+            next_index += 1
+        next_index = None if count < page_size else next_index
+        page_size = len(data)
         return {
             "index": index,
             "next_index": next_index,
