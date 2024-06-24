@@ -41,18 +41,14 @@ class Server:
     def assert_index(self, index: int, page_size: int) -> None:
         """Asserts if index is valid or not for the dataset
         """
-        if index < 0 or index >= len(self.dataset()):
-            raise AssertionError
+        assert isinstance(index, int)
+        assert 0 <= index < self.dataset()[-1][0]
+        assert isinstance(page_size, int)
+        assert 0 < page_size
 
-        if index != 0:
-            if index not in self.indexed_dataset():
-                raise AssertionError
-
-        if page_size <= 0:
-            raise AssertionError
-
-    def get_hyper_index(self, index: int = None,
-                        page_size: int = 10) -> Dict:
+    def get_hyper_index(self, index: int = 0,
+                        page_size: int = 10) -> Dict[str,
+                                                     Union[int, List, None]]:
         """Get the hyper index of a dataset
             The goal here is that if between two queries,
             certain rows are removed from the dataset,
@@ -68,20 +64,21 @@ class Server:
                     page_size: number of items per page
                     data: list of the data in the current page
         """
+        index = 0 if index is None else index
         self.assert_index(index, page_size)
         dataset = self.indexed_dataset()
         data = []
-        next_index = index + page_size
-        i = index
-        while i < next_index:
-            if dataset.get(i):
-                data.append(dataset[i])
-            else:
-                next_index += 1
-            i += 1
+        next_index = index
+        count = 0
+        while count < page_size and next_index < len(dataset):
+            if next_index in dataset:
+                data.append(dataset[next_index])
+                count += 1
+            next_index += 1
+        next_index = None if count < page_size or not data else next_index
         return {
-            'index': index,
-            'next_index': next_index,
-            'page_size': page_size,
-            'data': data
+            "index": index,
+            "next_index": next_index,
+            "page_size": len(data),
+            "data": data
         }
