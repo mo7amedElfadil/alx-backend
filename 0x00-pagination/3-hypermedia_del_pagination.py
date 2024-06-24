@@ -2,7 +2,6 @@
 """
 Deletion-resilient hypermedia pagination
 """
-
 import csv
 from typing import List, Dict, Union
 
@@ -13,11 +12,13 @@ class Server:
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
+        """Initialize the server instance
+        """
         self.__dataset = None
         self.__indexed_dataset = None
 
     def dataset(self) -> List[List]:
-        """Cached dataset
+        """Cached dataset that is loaded from a CSV file
         """
         if self.__dataset is None:
             with open(self.DATA_FILE) as f:
@@ -38,7 +39,7 @@ class Server:
         return self.__indexed_dataset
 
     def assert_index(self, index: int, page_size: int) -> None:
-        """Asserts if index is valid
+        """Asserts if index is valid or not for the dataset
         """
         assert isinstance(index, int)
         assert 0 <= index < len(self.dataset())
@@ -74,7 +75,7 @@ class Server:
                 data.append(dataset[next_index])
                 count += 1
             next_index += 1
-        next_index = None if count < page_size else next_index
+        next_index = None if count < page_size or not data else next_index
         return {
             "index": index,
             "next_index": next_index,
