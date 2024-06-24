@@ -41,10 +41,15 @@ class Server:
     def assert_index(self, index: int, page_size: int) -> None:
         """Asserts if index is valid or not for the dataset
         """
-        assert isinstance(index, int)
-        assert 0 <= index
-        assert isinstance(page_size, int)
-        assert 0 < page_size
+        if index < 0 or index >= len(self.dataset()):
+            raise AssertionError
+
+        if index != 0:
+            if index not in self.indexed_dataset():
+                raise AssertionError
+
+        if page_size <= 0:
+            raise AssertionError
 
     def get_hyper_index(self, index: int = None,
                         page_size: int = 10) -> Dict:
