@@ -42,7 +42,7 @@ class Server:
         """Asserts if index is valid or not for the dataset
         """
         assert isinstance(index, int)
-        assert 0 <= index < self.dataset()[-1][0]
+        assert 0 <= index < max(self.indexed_dataset().keys())
         assert isinstance(page_size, int)
         assert 0 < page_size
 
@@ -67,10 +67,11 @@ class Server:
         index = 0 if index is None else index
         self.assert_index(index, page_size)
         dataset = self.indexed_dataset()
+        last_index = max(dataset.keys())
         data = []
         next_index = index
         count = 0
-        while count < page_size and next_index < len(dataset):
+        while count < page_size and next_index < last_index:
             if next_index in dataset:
                 data.append(dataset[next_index])
                 count += 1
