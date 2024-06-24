@@ -71,7 +71,7 @@ class Server:
         data = []
         next_index = index
         count = 0
-        while count < page_size and next_index < last_index:
+        while count < page_size and next_index <= last_index:
             if next_index in dataset:
                 data.append(dataset[next_index])
                 count += 1
@@ -80,6 +80,6 @@ class Server:
         return {
             "index": index,
             "next_index": next_index,
-            "page_size": len(data),
+            "page_size": count,
             "data": data
         }
