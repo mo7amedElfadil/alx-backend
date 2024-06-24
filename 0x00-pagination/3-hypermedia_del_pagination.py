@@ -42,7 +42,7 @@ class Server:
         """Asserts if index is valid or not for the dataset
         """
         assert isinstance(index, int)
-        assert 0 <= index < len(self.dataset())
+        assert 0 <= index
         assert isinstance(page_size, int)
         assert 0 < page_size
 
