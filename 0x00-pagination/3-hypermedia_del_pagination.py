@@ -45,7 +45,7 @@ class Server:
         assert isinstance(page_size, int)
         assert 0 < page_size
 
-    def get_hyper_index(self, index: Union[int, None] = None,
+    def get_hyper_index(self, index: int = 0,
                         page_size: int = 10) -> Dict[str,
                                                      Union[int, List, None]]:
         """Get the hyper index of a dataset
@@ -75,7 +75,6 @@ class Server:
                 count += 1
             next_index += 1
         next_index = None if count < page_size else next_index
-        page_size = len(data)
         return {
             "index": index,
             "next_index": next_index,
