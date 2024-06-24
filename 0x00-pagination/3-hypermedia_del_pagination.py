@@ -63,22 +63,20 @@ class Server:
                     page_size: number of items per page
                     data: list of the data in the current page
         """
-        index = 0 if index is None else index
         self.assert_index(index, page_size)
         dataset = self.indexed_dataset()
-        size = len(dataset)
         data = []
-        next_index = index
-        count = 0
-        while count < page_size and next_index < size:
-            if next_index in dataset:
-                data.append(dataset[next_index])
-                count += 1
-            next_index += 1
-        next_index = next_index if next_index < size else None
+        next_index = index + page_size
+        i = index
+        while i < next_index:
+            if dataset.get(i):
+                data.append(dataset[i])
+            else:
+                next_index += 1
+            i += 1
         return {
-            "index": index,
-            "next_index": next_index,
-            "page_size": len(data),
-            "data": data
+            'index': index,
+            'next_index': next_index,
+            'page_size': page_size,
+            'data': data
         }
