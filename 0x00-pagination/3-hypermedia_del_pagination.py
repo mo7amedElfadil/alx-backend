@@ -46,9 +46,8 @@ class Server:
         assert isinstance(page_size, int)
         assert 0 < page_size
 
-    def get_hyper_index(self, index: int = 0,
-                        page_size: int = 10) -> Dict[str,
-                                                     Union[int, List, None]]:
+    def get_hyper_index(self, index: int = None,
+                        page_size: int = 10) -> Dict:
         """Get the hyper index of a dataset
             The goal here is that if between two queries,
             certain rows are removed from the dataset,
