@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ MRU Caching
 """
-from basic_cache import BaseCaching
+from base_caching import BaseCaching
 from collections import OrderedDict, deque
 
 
