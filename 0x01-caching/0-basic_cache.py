@@ -4,7 +4,7 @@
     Use the cache_data dictionary to store data
 """
 from basic_cache import BaseCaching
-from typing import Union
+from typing import Any
 
 
 class BasicCache(BaseCaching):
@@ -21,7 +21,7 @@ class BasicCache(BaseCaching):
         if key and item:
             self.cache_data[key] = item
 
-    def get(self, key: str) -> Union[str, None]:
+    def get(self, key: str) -> Any:
         """Retrieve data from the cache (dictionary) and check valid inputs
         """
         if key and self.cache_data.get(key):
