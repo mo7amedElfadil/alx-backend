@@ -3,7 +3,7 @@
     Simple caching system that inherits from BaseCaching
     Use the cache_data dictionary to store data
 """
-from typing import Any
+from typing import Any, Optional
 from basic_cache import BaseCaching
 
 
@@ -21,7 +21,7 @@ class BasicCache(BaseCaching):
         if key and item:
             self.cache_data[key] = item
 
-    def get(self, key: str) -> Any:
+    def get(self, key: str) -> Optional[Any]:
         """Retrieve data from the cache (dictionary) and check valid inputs
         """
         if key and self.cache_data.get(key):
