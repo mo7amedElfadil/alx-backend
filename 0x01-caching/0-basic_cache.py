@@ -18,13 +18,11 @@ class BasicCache(BaseCaching):
     def put(self, key: str, item: str) -> None:
         """Add data to the cache (dictionary) and check valid inputs
         """
-        if None in [key, item]:
-            return
-        self.cache_data[key] = item
+        if key and item:
+            self.cache_data[key] = item
 
     def get(self, key: str) -> Union[str, None]:
         """Retrieve data from the cache (dictionary) and check valid inputs
         """
-        if None in [key, self.cache_data.get(key)]:
-            return None
-        return self.cache_data.get(key)
+        if key and self.cache_data.get(key):
+            return self.cache_data.get(key)
