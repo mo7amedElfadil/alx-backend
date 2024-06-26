@@ -4,6 +4,7 @@
     Use the cache_data dictionary to store data
 """
 from basic_cache import BaseCaching
+from typing import Union
 
 
 class BasicCache(BaseCaching):
@@ -14,14 +15,14 @@ class BasicCache(BaseCaching):
             put: add data to the cache
             get: retrieve data from the cache
     """
-    def put(self, key, item):
+    def put(self, key: str, item: str) -> None:
         """Add data to the cache (dictionary) and check valid inputs
         """
         if None in [key, item]:
             return
         self.cache_data[key] = item
 
-    def get(self, key):
+    def get(self, key: str) -> Union[str, None]:
         """Retrieve data from the cache (dictionary) and check valid inputs
         """
         if None in [key, self.cache_data.get(key)]:
