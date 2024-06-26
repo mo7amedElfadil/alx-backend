@@ -15,14 +15,14 @@ class BasicCache(BaseCaching):
             get: retrieve data from the cache
     """
     def put(self, key, item):
-        """Add data to the cache
+        """Add data to the cache (dictionary) and check valid inputs
         """
         if None in [key, item]:
             return
         self.cache_data[key] = item
 
     def get(self, key):
-        """Retrieve data from the cache
+        """Retrieve data from the cache (dictionary) and check valid inputs
         """
         if None in [key, self.cache_data.get(key)]:
             return None
