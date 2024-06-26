@@ -14,12 +14,15 @@ class FIFOCache(BaseCaching):
             get: retrieve data from the cache
     """
     def __init__(self):
+        """Constructor for FIFOCache Class
+            Initialize parent class, Cache Dictionary and FIFO queue
+        """
         super().__init__()
         self.cache_data = OrderedDict()
         self.fifo = deque()
 
     def overflow(self):
-        """Determine if the cache is full
+        """Determine if the cache is full and remove the first item
         """
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
             discarded = self.fifo.popleft()
@@ -27,7 +30,7 @@ class FIFOCache(BaseCaching):
             print('DISCARD: {}'.format(discarded))
 
     def put(self, key, item):
-        """Add data to the cache
+        """Add data to the cache and check valid inputs
         """
         if None in [key, item]:
             return
@@ -39,7 +42,7 @@ class FIFOCache(BaseCaching):
             self.fifo.append(key)
 
     def get(self, key):
-        """Retrieve data from the cache
+        """Retrieve data from the cache and check valid inputs
         """
         if None in [key, self.cache_data.get(key)]:
             return None

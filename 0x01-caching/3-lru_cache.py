@@ -14,18 +14,21 @@ class LRUCache(BaseCaching):
             get: retrieve data from the cache
     """
     def __init__(self):
+        """Constructor for LRUCache Class
+            Initialize parent class, Cache Dictionary and LRU queue
+        """
         super().__init__()
         self.cache_data = OrderedDict()
         self.lru = deque()
 
     def update_lru(self, key):
-        """Update the LRU list
+        """Update the LRU list with the most recent key
         """
         self.lru.remove(key)
         self.lru.append(key)
 
     def overflow(self):
-        """Determine if the cache is full
+        """Determine if the cache is full and remove the least recent item
         """
         if len(self.cache_data) > BaseCaching.MAX_ITEMS:
             discarded = self.lru.popleft()
@@ -33,7 +36,7 @@ class LRUCache(BaseCaching):
             print('DISCARD: {}'.format(discarded))
 
     def put(self, key, item):
-        """Add data to the cache
+        """Add data to the cache and check valid inputs
         """
         if None in [key, item]:
             return
@@ -46,7 +49,7 @@ class LRUCache(BaseCaching):
             self.lru.append(key)
 
     def get(self, key):
-        """Retrieve data from the cache
+        """Retrieve data from the cache and check valid inputs
         """
         if None in [key, self.cache_data.get(key)]:
             return None

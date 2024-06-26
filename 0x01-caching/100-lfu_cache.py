@@ -15,14 +15,15 @@ class LFUCache(BaseCaching):
     """
 
     def __init__(self):
-        """ Initialize
+        """ Constructor for LFUCache class
+            Initialize parent class and counter
         """
         super().__init__()
         self.cache_data = OrderedDict()
         self.counter = Counter()
 
     def over_flow(self):
-        """Determine if the cache is full
+        """Determine if the cache is full and remove the least used item
         """
         if len(self.cache_data) > BaseCaching.MAX_ITEMS:
             discard = min(self.counter, key=self.counter.get)
@@ -31,7 +32,7 @@ class LFUCache(BaseCaching):
             print('DISCARD: {}'.format(discard))
 
     def put(self, key, item):
-        """Add data to the cache
+        """Add data to the cache and check valid inputs
         """
         if None in [key, item]:
             return
@@ -44,7 +45,7 @@ class LFUCache(BaseCaching):
             self.counter[key] = 1
 
     def get(self, key):
-        """Retrieve data from the cache
+        """Retrieve data from the cache and check valid inputs
         """
         if None in [key, self.cache_data.get(key)]:
             return None

@@ -14,20 +14,21 @@ class MRUCache(BaseCaching):
             get: retrieve data from the cache
     """
     def __init__(self):
-        """Initialize
+        """ Constructor for MRUCache Class
+            Initialize parent class, Cache Dictionary and MRU queue
         """
         super().__init__()
         self.cache_data = OrderedDict()
         self.mru = deque()
 
     def update_mru(self, key):
-        """Update the MRU list
+        """Update the MRU list with the most recent key
         """
         self.mru.remove(key)
         self.mru.append(key)
 
     def overflow(self):
-        """Determine if the cache is full
+        """Determine if the cache is full and remove the most recent item
         """
         if len(self.cache_data) > BaseCaching.MAX_ITEMS:
             discarded = self.mru.pop()
@@ -35,7 +36,7 @@ class MRUCache(BaseCaching):
             print('DISCARD: {}'.format(discarded))
 
     def put(self, key, item):
-        """Add data to the cache
+        """Add data to the cache and check valid inputs
         """
         if None in [key, item]:
             return
@@ -48,7 +49,7 @@ class MRUCache(BaseCaching):
             self.mru.append(key)
 
     def get(self, key):
-        """Retrieve data from the cache
+        """Retrieve data from the cache and check valid inputs
         """
         if None in [key, self.cache_data.get(key)]:
             return None
