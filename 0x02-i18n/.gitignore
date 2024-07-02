@@ -1,5 +1,6 @@
 *
 !/*.py
+!/*.po
 !/.gitignore
 !/README.md
 !/LICENSE
@@ -7,3 +8,14 @@
 !/*.html
 !/templates/
 !/templates/*.html
+!/translations/
+!/translations/*
+!/translations/en
+!/translations/en/*
+!/translations/en/LC_MESSAGES
+!/translations/en/LC_MESSAGES/*
+!/translations/fr
+!/translations/fr/*
+!/translations/fr/LC_MESSAGES
+!/translations/fr/LC_MESSAGES/*
+

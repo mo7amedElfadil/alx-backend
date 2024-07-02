@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
 from typing import Dict, Union
+import pytz
 
 
 class Config:
@@ -14,17 +15,46 @@ class Config:
 
 # @babel.localeselector
 def get_locale() -> str:
-    """ Get locale from request """
-    locale = request.args.get('locale')
-    if locale and locale in app.config['LANGUAGES']:
-        return locale
+    """ Get locale from request with the priority:
+        1. URL parameter
+        2. User setting
+        3. Request header
+        4. Application configuration (default)
+    """
+    locale_order = [request.args, g.user, request.headers, app.config]
+    for source in locale_order:
+        if source is None:
+            continue
+        locale = source.get('locale')
+        if locale and locale in app.config['LANGUAGES']:
+            return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+# @babel.timezoneselector
+def get_timezone() -> str:
+    """ Get timezone from request with the priority:
+        1. URL parameter
+        2. User setting
+        3. Application configuration (default)
+    """
+    timezone_order = [request.args, g.user, app.config]
+    for source in timezone_order:
+        if source is None:
+            continue
+        timezone = source.get('timezone')
+        if timezone:
+            try:
+                return pytz.timezone(timezone).zone
+            except pytz.exceptions.UnknownTimeZoneError:
+                break
+    return app.config['BABEL_DEFAULT_TIMEZONE']
 
 
 app = Flask(__name__)
 # uncomment the following line and @babel.localeselector for checker
 # babel = Babel(app)
-babel = Babel(app, locale_selector=get_locale)
+babel = Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
 app.config.from_object(Config)
 app.url_map.strict_slashes = False
 
@@ -55,7 +85,7 @@ def before_request() -> None:
 @app.route('/')
 def helloWorld() -> str:
     """ Home page """
-    return render_template('5-index.html')
+    return render_template('7-index.html')
 
 
 if __name__ == "__main__":

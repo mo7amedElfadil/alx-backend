@@ -14,10 +14,19 @@ class Config:
 
 # @babel.localeselector
 def get_locale() -> str:
-    """ Get locale from request """
-    locale = request.args.get('locale')
-    if locale and locale in app.config['LANGUAGES']:
-        return locale
+    """ Get locale from request with the priority:
+        1. URL parameter
+        2. User setting
+        3. Request header
+        4. Application configuration (default)
+    """
+    locale_order = [request.args, g.user, request.headers, app.config]
+    for source in locale_order:
+        locale = source.get('locale')
+        if source is None:
+            continue
+        if locale and locale in app.config['LANGUAGES']:
+            return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
@@ -55,7 +64,7 @@ def before_request() -> None:
 @app.route('/')
 def helloWorld() -> str:
     """ Home page """
-    return render_template('5-index.html')
+    return render_template('6-index.html')
 
 
 if __name__ == "__main__":
