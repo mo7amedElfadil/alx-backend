@@ -13,7 +13,24 @@ class Config:
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
-# @babel.localeselector
+app = Flask(__name__)
+# uncomment the following line and @babel.localeselector for checker
+babel = Babel(app)
+# babel = Babel(app, locale_selector=get_locale,
+#               timezone_selector=get_timezone)
+app.config.from_object(Config)
+app.url_map.strict_slashes = False
+
+
+users = {
+    1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
+    2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
+    3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
+    4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
+}
+
+
+@babel.localeselector
 def get_locale() -> str:
     """ Get locale from request with the priority:
         1. URL parameter
@@ -31,7 +48,7 @@ def get_locale() -> str:
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-# @babel.timezoneselector
+@babel.timezoneselector
 def get_timezone() -> str:
     """ Get timezone from request with the priority:
         1. URL parameter
@@ -49,22 +66,6 @@ def get_timezone() -> str:
             except pytz.exceptions.UnknownTimeZoneError:
                 break
     return app.config['BABEL_DEFAULT_TIMEZONE']
-
-
-app = Flask(__name__)
-# uncomment the following line and @babel.localeselector for checker
-# babel = Babel(app)
-babel = Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
-app.config.from_object(Config)
-app.url_map.strict_slashes = False
-
-
-users = {
-    1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
-    2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
-    3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
-    4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
-}
 
 
 def get_user() -> Union[Dict, None]:
