@@ -11,22 +11,24 @@ class Config:
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
-# @babel.localeselector
-def get_locale() -> str:
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-
 app = Flask(__name__)
 # uncomment the following line and @babel.localeselector for checker
-# babel = Babel(app)
-babel = Babel(app, locale_selector=get_locale)
+babel = Babel(app)
+# babel = Babel(app, locale_selector=get_locale)
 app.config.from_object(Config)
 app.url_map.strict_slashes = False
 
 
+@babel.localeselector
+def get_locale() -> str:
+    """ Get locale from request
+    """
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
 @app.route('/', strict_slashes=False)
 def helloWorld() -> str:
-    """ Home page """
+    """ Home page for the Flask app """
     return render_template('2-index.html')
 
 
