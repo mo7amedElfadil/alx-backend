@@ -5,3 +5,5 @@
 !/LICENSE
 *main.py
 !/*.html
+!/templates/
+!/templates/*.html
