@@ -28,7 +28,7 @@ users = {
 }
 
 
-# @babel.localeselector
+@babel.localeselector
 def get_locale() -> str:
     """ Get locale from request with the priority:
         1. URL parameter
