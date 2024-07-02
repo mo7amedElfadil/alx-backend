@@ -19,15 +19,20 @@ app.config.from_object(Config)
 app.url_map.strict_slashes = False
 
 
-@babel.localeselector
+# @babel.localeselector
 def get_locale() -> str:
+    """ Get locale from request """
+    locale = request.args.get('locale')
+    print("locale", locale)
+    if locale and locale in app.config['LANGUAGES']:
+        return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/', strict_slashes=False)
 def helloWorld() -> str:
     """ Home page """
-    return render_template('2-index.html')
+    return render_template('4-index.html')
 
 
 if __name__ == "__main__":
