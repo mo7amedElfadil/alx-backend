@@ -19,3 +19,4 @@
 !/translations/fr/LC_MESSAGES
 !/translations/fr/LC_MESSAGES/*
 
+!/babel.cfg
