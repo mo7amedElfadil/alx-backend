@@ -25,10 +25,9 @@ def get_locale() -> str:
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/')
 def helloWorld() -> str:
-    """ Home page for the Flask app
-    """
+    """ Home page for the Flask app """
     return render_template('3-index.html')
 
 

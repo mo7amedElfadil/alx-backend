@@ -38,9 +38,9 @@ def get_locale() -> str:
     """
     locale_order = [request.args, g.user, request.headers, app.config]
     for source in locale_order:
-        locale = source.get('locale')
         if source is None:
             continue
+        locale = source.get('locale')
         if locale and locale in app.config['LANGUAGES']:
             return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
