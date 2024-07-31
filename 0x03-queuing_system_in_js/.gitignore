@@ -1,0 +1,9 @@
+*
+!/*.js
+!/.gitignore
+!/README.md
+!/LICENSE
+*main.js
+!/.babelrc
+!/dump.rdb
+!/package.json
